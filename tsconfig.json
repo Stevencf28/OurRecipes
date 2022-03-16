@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "ES2019",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"]
+    },
+
+    // Compiler error settings
+    "strict": true,
+    "noImplicitAny": false, // need this for js files
+
+    // Allow js files
+    "checkJs": true,
+    "allowJs": true,
+
+    // Remix takes care of building everything in `remix build`.
+    "noEmit": true
+  },
+  "include": [
+    "remix.env.d.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "app/**/*.js",
+    "app/**/*.jsx"
+  ]
+}

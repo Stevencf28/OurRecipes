@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "@remix-run/eslint-config",
+    "plugin:prettier/recommended"
+  ],
+  "settings": {
+    "import/internal-regex": "^~/"
+  },
+  "reportUnusedDisableDirectives": true,
+  "rules": {
+    "prettier/prettier": "warn",
+    "sort-imports": ["warn", { "ignoreDeclarationSort": true }],
+    "import/newline-after-import": "warn",
+    "import/order": ["warn", {
+      "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"]],
+      "alphabetize": { "order": "asc" }
+    }]
+  }
+}

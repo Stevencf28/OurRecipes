@@ -1,0 +1,30 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "extensions.ignoreRecommendations": false,
+  "eslint.enable": true,
+  "eslint.format.enable": true,
+  "[typescript]": {
+    "editor.rulers": [80],
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+  },
+  "[typescriptreact]": {
+    "editor.rulers": [80],
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+  },
+  "[javascript]": {
+    "editor.rulers": [80],
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+  },
+  "[javascriptreact]": {
+    "editor.rulers": [80],
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+  },
+}
