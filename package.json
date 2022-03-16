@@ -5,12 +5,12 @@
   "license": "",
   "sideEffects": false,
   "scripts": {
-    "build": "cross-env NODE_ENV=production remix build",
     "dev": "cross-env NODE_ENV=development remix dev",
-    "lint": "eslint --cache ./app",
     "format": "eslint --cache --fix ./app",
+    "lint": "eslint --cache ./app",
     "typecheck": "tsc --noEmit",
     "postinstall": "remix setup node",
+    "build": "cross-env NODE_ENV=production remix build",
     "start": "cross-env NODE_ENV=production remix-serve build"
   },
   "dependencies": {
