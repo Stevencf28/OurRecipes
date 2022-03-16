@@ -42,7 +42,7 @@ jobs:
   deploy:
     if: github.event_name == 'push'
     needs: build
-    uses: ./.github/workflows/deploy.yml@main
+    uses: ./.github/workflows/deploy.yml
     with:
       app_name: our-recipes-kitchen-surfers
     secrets:
