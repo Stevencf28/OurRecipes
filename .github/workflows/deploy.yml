@@ -1,0 +1,29 @@
+name: deploy
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        type: string
+        required: true
+    secrets:
+      HEROKU_API_KEY:
+        required: true
+      HEROKU_EMAIL:
+        required: true
+
+jobs:
+  deploy:
+    if: github.repository == 'G9-W2022-COMP231/OurRecipes' && github.ref = 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ inputs.app_name }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          dontautocreate: true

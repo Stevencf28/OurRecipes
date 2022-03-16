@@ -38,3 +38,13 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: build
+    uses: ./.github/workflows/deploy.yml@main
+    with:
+      app_name: our-recipes-kitchen-surfers
+    secrets:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
