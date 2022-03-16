@@ -6,7 +6,7 @@ on:
       - main
     paths-ignore:
       - ".vscode/**"
-      - "README.md"
+      - "**/*.md"
   pull_request:
     types:
       - opened
@@ -15,7 +15,7 @@ on:
       - main
     paths-ignore:
       - ".vscode/**"
-      - "README.md"
+      - "**/*.md"
 
 jobs:
   build:
