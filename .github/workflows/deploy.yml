@@ -14,7 +14,7 @@ on:
 
 jobs:
   deploy:
-    if: github.repository == 'G9-W2022-COMP231/OurRecipes' && github.ref = 'refs/heads/main'
+    if: github.repository == 'G9-W2022-COMP231/OurRecipes' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
