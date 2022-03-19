@@ -1,31 +1,34 @@
+import { LoaderFunction, json, useLoaderData } from "remix";
+import { RecipeDetails, getRandomRecipes } from "~/utils/spoonacular.server";
+
+interface LoaderData {
+  // TODO: filter data and use `Pick<RecipeDetails, "..." | "...">[]`
+  recipes: RecipeDetails[];
+}
+
+/**
+ * Server-side function to load the data needed for the `/` index route
+ *
+ * We need to get the list of available recipes
+ */
+export const loader: LoaderFunction = async () => {
+  const { recipes } = await getRandomRecipes({ number: 1 });
+  // TODO: filter data to only include what to show to the user
+  return json<LoaderData>({ recipes });
+};
+
 export default function Index() {
+  const data = useLoaderData<LoaderData>();
+
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix</h1>
+    <div className="container">
       <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
+        {data.recipes.map((recipe) => (
+          <li key={recipe.id}>
+            <h3>{recipe.title}</h3>
+            <p>{recipe.readyInMinutes} mins</p>
+          </li>
+        ))}
       </ul>
     </div>
   );

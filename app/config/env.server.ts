@@ -4,6 +4,7 @@
 export interface Env {
   dbUri: string;
   cookieSecrets: string[];
+  spoonacularApiKey: string;
 }
 
 /**
@@ -32,6 +33,7 @@ const parseEnv = (): Readonly<Env> => {
   const parsed: Partial<Env> = {
     dbUri: process.env.DB_URI,
     cookieSecrets: process.env.COOKIE_SECRET?.split("\n")?.filter(Boolean),
+    spoonacularApiKey: process.env.SPOONACULAR_API_KEY,
   };
 
   if (!parsed.dbUri) {
@@ -40,6 +42,10 @@ const parseEnv = (): Readonly<Env> => {
 
   if (!parsed.cookieSecrets || parsed.cookieSecrets.length <= 0) {
     throw new EnvError("COOKIE_SECRET");
+  }
+
+  if (!parsed.spoonacularApiKey) {
+    throw new EnvError("SPOONACULAR_API_KEY");
   }
 
   Object.freeze(parsed);
