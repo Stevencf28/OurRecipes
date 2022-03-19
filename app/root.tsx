@@ -1,5 +1,7 @@
 import { CatchBoundaryComponent } from "@remix-run/react/routeModules";
 import { ReactNode } from "react";
+import SSRProvider from "react-bootstrap/SSRProvider";
+import type { MetaFunction } from "remix";
 import {
   ErrorBoundaryComponent,
   Links,
@@ -11,8 +13,8 @@ import {
   ScrollRestoration,
   useCatch,
 } from "remix";
-import type { MetaFunction } from "remix";
 import rootStyles from "~/styles/root.css";
+import Navigation from "./components/navigation";
 
 /**
  * Meta tags to add; can be overridden by child routes
@@ -54,7 +56,10 @@ function Document({ children }: DocumentProps): JSX.Element {
         <Links />
       </head>
       <body>
-        {children}
+        <SSRProvider>
+          <Navigation />
+          {children}
+        </SSRProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
