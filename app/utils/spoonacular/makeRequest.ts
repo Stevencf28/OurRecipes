@@ -1,4 +1,4 @@
-import env from "~/config/env.server";
+import getEnv from "~/config/env.server";
 
 /**
  * Make a request to the Spoonacular API endpoint with the given options
@@ -14,7 +14,7 @@ export const makeRequest = async <Data>(
   endpoint: string,
   params: URLSearchParams = new URLSearchParams(),
 ): Promise<Data> => {
-  params.set("apiKey", env.spoonacularApiKey);
+  params.set("apiKey", getEnv("SPOONACULAR_API_KEY"));
   params.sort();
   const search = params?.toString();
   const path = search ? `${endpoint}?${search}` : endpoint;

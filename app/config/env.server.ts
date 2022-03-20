@@ -1,11 +1,7 @@
 /**
- * Parsed env variables that we can use
+ * Names of the env variables that we need
  */
-export interface Env {
-  dbUri: string;
-  cookieSecrets: string[];
-  spoonacularApiKey: string;
-}
+export type EnvName = "DB_URI" | "COOKIE_SECRET" | "SPOONACULAR_API_KEY";
 
 /**
  * What to suggest when an env variable is missing
@@ -14,7 +10,7 @@ export interface Env {
 const actionMsg =
   process.env.NODE_ENV === "production"
     ? "did you set all environment variables?"
-    : "did you create properly formatted .env file from .env.example?";
+    : "did you create your .env file from .env.example?";
 
 /**
  * Error class for when a needed env variable is missing
@@ -26,36 +22,14 @@ export class EnvError extends Error {
 }
 
 /**
- * Parse needed values from the env variables
- * @private
+ * Get the needed env variable
  */
-const parseEnv = (): Readonly<Env> => {
-  const parsed: Partial<Env> = {
-    dbUri: process.env.DB_URI,
-    cookieSecrets: process.env.COOKIE_SECRET?.split("\n")?.filter(Boolean),
-    spoonacularApiKey: process.env.SPOONACULAR_API_KEY,
-  };
+export default function getEnv(envName: EnvName): string {
+  const parsed = process.env[envName];
 
-  if (!parsed.dbUri) {
-    throw new EnvError("DB_URI");
+  if (!parsed) {
+    throw new EnvError(envName);
   }
 
-  if (!parsed.cookieSecrets || parsed.cookieSecrets.length <= 0) {
-    throw new EnvError("COOKIE_SECRET");
-  }
-
-  if (!parsed.spoonacularApiKey) {
-    throw new EnvError("SPOONACULAR_API_KEY");
-  }
-
-  Object.freeze(parsed);
-
-  // Coersion because we already checked all fields
-  return parsed as Env;
-};
-
-/**
- * Parsed env variables that we can use
- */
-const env = parseEnv();
-export default env;
+  return parsed;
+}
