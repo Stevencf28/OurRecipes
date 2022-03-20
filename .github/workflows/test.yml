@@ -17,21 +17,24 @@ on:
       - ".vscode/**"
       - "**/*.md"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "16"
-          cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        uses: bahmutov/npm-install@v1
 
       - name: Typecheck
         run: npm run typecheck
@@ -45,6 +48,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       app_name: our-recipes-kitchen-surfers
+      environment: Heroku main branch
     secrets:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}

@@ -6,6 +6,9 @@ on:
       app_name:
         type: string
         required: true
+      environment:
+        type: string
+        required: true
     secrets:
       HEROKU_API_KEY:
         required: true
@@ -16,13 +19,15 @@ jobs:
   deploy:
     if: github.repository == 'G9-W2022-COMP231/OurRecipes' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: Heroku main branch
+    environment:
+      name: ${{ inputs.environment }}
+      url: https://${{ inputs.app_name }}.herokuapp.com
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
+        uses: akhileshns/heroku-deploy@v3
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ inputs.app_name }}
