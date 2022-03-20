@@ -1,4 +1,5 @@
 import getEnv from "~/config/env.server";
+import { parseToFloat } from "~/utils/parseString";
 
 /**
  * Make a request to the Spoonacular API endpoint with the given options
@@ -26,6 +27,20 @@ export const makeRequest = async <Data>(
     },
     method: "GET",
   });
+
+  const quotaUsedByRequest = parseToFloat(
+    response.headers.get("x-api-quota-request") ?? "",
+  );
+  const quotaLeftToday = parseToFloat(
+    response.headers.get("x-api-quota-left") ?? "",
+  );
+
+  if (quotaUsedByRequest > 0) {
+    console.log(
+      `[Spoonacular] Used quota ${quotaUsedByRequest.toFixed(3)} pts ` +
+        `(${quotaLeftToday.toFixed(3)} pts left)`,
+    );
+  }
 
   return response.json();
 };

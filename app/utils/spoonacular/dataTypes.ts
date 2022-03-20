@@ -8,26 +8,16 @@
 
 /**
  * Minimal information about the recipe
+ *
+ * There are some fields that are optionally returned by specifying in the query
+ * options. You should create a separate interface that extends this interface
+ * for that if you want to use one.
  */
 export interface RecipeCore {
   id: number;
   title: string;
   image: string;
   imageType: string;
-}
-
-/**
- * Information returned by the `complexSearch` endpoint
- *
- * There are some fields that are optionally returned by specifying in the query
- * options. You should create a separate interface that extends this interface
- * for that if you want to use one.
- */
-export interface RecipeSearch extends RecipeCore {
-  calories: number;
-  carbs: string;
-  fat: string;
-  protein: string;
 }
 
 // This is not all of the fields, but I just picked the ones that didn't look
