@@ -15,6 +15,7 @@ import {
 } from "remix";
 import rootStyles from "~/styles/root.css";
 import Navigation from "./components/navigation";
+import SearchByTitle from "./components/searchBar";
 
 /**
  * Meta tags to add; can be overridden by child routes
@@ -58,6 +59,7 @@ function Document({ children }: DocumentProps): JSX.Element {
       <body>
         <SSRProvider>
           <Navigation />
+          <SearchByTitle />
           {children}
         </SSRProvider>
         <ScrollRestoration />

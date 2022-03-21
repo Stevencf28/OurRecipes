@@ -1,5 +1,5 @@
+import { Card, Col, Row } from "react-bootstrap";
 import { LoaderFunction, json, useLoaderData } from "remix";
-import { Col, Card, Row } from "react-bootstrap";
 import { parseToInt } from "~/utils/parseString";
 import {
   RecipeDetails,
@@ -79,23 +79,23 @@ export default function Index() {
           <Col>
             {data.type === "main" &&
               data.recipes.map((recipe) => (
-                <a href= {recipe.sourceUrl}>
+                <a href={recipe.sourceUrl}>
                   <Card>
-                    <Card.Img variant="top" src={recipe.image}/>
+                    <Card.Img variant="top" src={recipe.image} />
                     <Card.Body>
                       <Card.Title>{recipe.title}</Card.Title>
-                    </Card.Body> 
+                    </Card.Body>
                   </Card>
                 </a>
               ))}
             {data.type === "search" &&
               data.results.recipes.map((recipe) => (
-                <a href= {recipe.sourceUrl}>
+                <a href={recipe.sourceUrl}>
                   <Card>
-                    <Card.Img variant="top" src={recipe.image}/>
+                    <Card.Img variant="top" src={recipe.image} />
                     <Card.Body>
                       <Card.Title>{recipe.title}</Card.Title>
-                    </Card.Body> 
+                    </Card.Body>
                   </Card>
                 </a>
               ))}
@@ -104,7 +104,7 @@ export default function Index() {
       </Row>
     </div>
 
-    //Code before Recipe List UI was implemented 
+    //Code before Recipe List UI was implemented
     // <div className="container">
     //   <ul>
     //     {data.type === "main" &&

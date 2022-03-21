@@ -1,1 +1,58 @@
 /* Any global styles to apply */
+.card {
+  margin-left: 300px;
+  margin-top: 30px;
+   background: white;
+   color: white;
+   padding: 1em;
+   border-radius: 30px;
+   width: 100%;
+   max-width: 850px;
+   font-size: 120%;
+ }
+
+ .search {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+
+ button {
+   margin: 0.5em;
+   border-radius: 50%;
+   border: none;
+   height: 44px;
+   width: 44px;
+   outline: none;
+   background: gray;
+   color: white;
+   cursor: pointer;
+   transition: 0.2s ease-in-out;
+ }
+
+ input.search-bar {
+   border: none;
+   outline: none;
+   padding: 0.4em 1em;
+   border-radius: 24px;
+   background: gray;
+   color: white;
+   font-family: inherit;
+   font-size: 105%;
+   width: calc(100% - 100px);
+ }
+
+ button:hover {
+   background: #7c7c7c6b;
+ }
+
+
+ .flex {
+   display: flex;
+   align-items: center;
+ }
+
+ .description {
+   text-transform: capitalize;
+   margin-left: 8px;
+ }
