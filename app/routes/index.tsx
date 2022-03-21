@@ -1,4 +1,5 @@
 import { LoaderFunction, json, useLoaderData } from "remix";
+import { Col, Card, Row } from "react-bootstrap";
 import { parseToInt } from "~/utils/parseString";
 import {
   RecipeDetails,
@@ -73,22 +74,54 @@ export default function Index() {
 
   return (
     <div className="container">
-      <ul>
-        {data.type === "main" &&
-          data.recipes.map((recipe) => (
-            <li key={recipe.id}>
-              <h3>{recipe.title}</h3>
-              <p>{recipe.readyInMinutes} mins</p>
-            </li>
-          ))}
-        {data.type === "search" &&
-          data.results.recipes.map((recipe) => (
-            <li key={recipe.id}>
-              <h3>{recipe.title}</h3>
-              <p>{recipe.readyInMinutes} mins</p>
-            </li>
-          ))}
-      </ul>
+      <Row xs={1} md={3} className="g-5 mt-3 mb-3">
+        {Array.from({ length: 9 }).map((_, idx) => (
+          <Col>
+            {data.type === "main" &&
+              data.recipes.map((recipe) => (
+                <a href= {recipe.sourceUrl}>
+                  <Card>
+                    <Card.Img variant="top" src={recipe.image}/>
+                    <Card.Body>
+                      <Card.Title>{recipe.title}</Card.Title>
+                    </Card.Body> 
+                  </Card>
+                </a>
+              ))}
+            {data.type === "search" &&
+              data.results.recipes.map((recipe) => (
+                <a href= {recipe.sourceUrl}>
+                  <Card>
+                    <Card.Img variant="top" src={recipe.image}/>
+                    <Card.Body>
+                      <Card.Title>{recipe.title}</Card.Title>
+                    </Card.Body> 
+                  </Card>
+                </a>
+              ))}
+          </Col>
+        ))}
+      </Row>
     </div>
+
+    //Code before Recipe List UI was implemented 
+    // <div className="container">
+    //   <ul>
+    //     {data.type === "main" &&
+    //       data.recipes.map((recipe) => (
+    //         <li key={recipe.id}>
+    //           <h3>{recipe.title}</h3>
+    //           <p>{recipe.readyInMinutes} mins</p>
+    //         </li>
+    //       ))}
+    //     {data.type === "search" &&
+    //       data.results.recipes.map((recipe) => (
+    //         <li key={recipe.id}>
+    //           <h3>{recipe.title}</h3>
+    //           <p>{recipe.readyInMinutes} mins</p>
+    //         </li>
+    //       ))}
+    //   </ul>
+    // </div>
   );
 }
