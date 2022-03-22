@@ -2,6 +2,14 @@
 
 - [Remix Docs](https://remix.run/docs)
 
+## Loading the project
+
+From your terminal:
+
+```sh
+npm -g install npm@latest
+```
+
 ## Development
 
 From your terminal:
