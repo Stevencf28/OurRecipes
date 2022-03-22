@@ -49,6 +49,24 @@ export interface RecipeDetails extends RecipeCore {
   analyzedInstructions: AnalyzedInstruction[];
 }
 
+/**
+ * The structure for recipe information returned from recipe search with
+ * ingredients filters
+ */
+export interface RecipeFromIngredients
+  extends RecipeDetails,
+    RecipeFillIngredients {}
+
+// This is NOT a stand-alone type that can describe a recipe.
+// Use `RecipeFromIngredients` instead.
+interface RecipeFillIngredients {
+  missedIngredientCount: number;
+  usedIngredientCount: number;
+  missedIngredients: IngredientInRecipeSearch[];
+  usedIngredients: IngredientInRecipeSearch[];
+  unusedIngredients: IngredientInRecipeSearch[];
+}
+
 // -------------------------- Instruction Types --------------------------------
 
 export interface AnalyzedInstruction {
@@ -76,6 +94,17 @@ export interface IngredientWithImage extends IngredientCore {
 
 export interface IngredientInInstruction extends IngredientWithImage {
   localizedName: string;
+}
+
+export interface IngredientInRecipeSearch extends IngredientWithImage {
+  amount: number;
+  aisle: string;
+  original: string;
+  originalName: string;
+  unit: string;
+  unitLong: string;
+  unitShort: string;
+  meta: string[];
 }
 
 // -------------------------- Equipment Types ----------------------------------
