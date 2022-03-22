@@ -7,7 +7,7 @@
 From your terminal:
 
 ```sh
-npm -g install npm@latest
+npm install
 ```
 
 ## Development
