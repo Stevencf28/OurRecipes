@@ -1,5 +1,6 @@
 import { Card, Col, Row } from "react-bootstrap";
 import { Form, LoaderFunction, json, useLoaderData } from "remix";
+import RecipeList from "~/components/recipe-list";
 import { parseToInt } from "~/utils/parseString";
 import {
   RecipeDetails,
@@ -50,12 +51,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   // If the search is empty, we return the random list of recipes
   if (!search) {
-    const { recipes } = await getRandomRecipes({ number: 1 });
+    const { recipes } = await getRandomRecipes({ number: 9 });
     // TODO: filter data to only include what to show to the user
     return json<MainData>({ type: "main", recipes });
   }
 
-  const NUM_RESULTS_PER_PAGE = 2;
+  const NUM_RESULTS_PER_PAGE = 3;
   const results = await searchRecipesByTitle(search, {
     number: NUM_RESULTS_PER_PAGE,
     offset: page * NUM_RESULTS_PER_PAGE,
@@ -71,99 +72,43 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const data = useLoaderData<LoaderData>();
+  let recipes: RecipeDetails[];
+
+  if (data.type === "main") {
+    recipes = data.recipes;
+  } else {
+    recipes = data.results.recipes;
+  }
+
   /*
    * Form is not called from component due to issues with the form not submitting correctly as a component
    */
   return (
     <>
       <Form method="get">
-        <div className="card">
-          <div className="search">
-            <input
-              type="text"
-              name="q"
-              id="searchQuery"
-              className="search-bar"
-              placeholder="Search for the recipe you want"
-            />
-            <button type="submit">
-              <svg
-                stroke="currentColor"
-                fill="currentColor"
-                stroke-width="0"
-                viewBox="0 0 1024 1024"
-                height="1.5em"
-                width="1.5em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0 0 11.6 0l43.6-43.5a8.2 8.2 0 0 0 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"></path>
-              </svg>
-            </button>
-          </div>
+        <div className="container">
+          <SearchByTitle />
         </div>
       </Form>
       <div className="container">
-        <Row xs={1} md={3} className="g-5 mt-3 mb-3">
-          {Array.from({ length: 9 }).map((_, idx) => (
-            <Col>
-              {data.type === "main" &&
-                data.recipes.map((recipe) => (
-                  <a href={recipe.sourceUrl}>
-                    <Card>
-                      <Card.Img variant="top" src={recipe.image} />
-                      <Card.Body>
-                        <Card.Title>{recipe.title}</Card.Title>
-                      </Card.Body>
-                    </Card>
-                  </a>
-                ))}
-              {data.type === "search" &&
-                data.results.recipes.map((recipe) => (
-                  <a href={recipe.sourceUrl}>
-                    <Card>
-                      <Card.Img variant="top" src={recipe.image} />
-                      <Card.Body>
-                        <Card.Title>{recipe.title}</Card.Title>
-                      </Card.Body>
-                    </Card>
-                  </a>
-                ))}
-            </Col>
-          ))}
-        </Row>
+        <RecipeList recipes={recipes} />
       </div>
     </>
-    //Code before Recipe List UI was implemented
-    // <div className="container">
-    //   <ul>
-    //     {data.type === "main" &&
-    //       data.recipes.map((recipe) => (
-    //         <li key={recipe.id}>
-    //           <h3>{recipe.title}</h3>
-    //           <p>{recipe.readyInMinutes} mins</p>
-    //         </li>
-    //       ))}
-    //     {data.type === "search" &&
-    //       data.results.recipes.map((recipe) => (
-    //         <li key={recipe.id}>
-    //           <h3>{recipe.title}</h3>
-    //           <p>{recipe.readyInMinutes} mins</p>
-    //         </li>
-    //       ))}
-    //   </ul>
-    // </div>
   );
 }
+
 function SearchByTitle(): JSX.Element {
   return (
-    <div className="card">
+    <div className="Search-UI">
       <div className="search">
         <input
           type="text"
+          name="q"
+          id="searchQuery"
           className="search-bar"
           placeholder="Search for the recipe you want"
         />
-        <button>
+        <button type="submit">
           <svg
             stroke="currentColor"
             fill="currentColor"
