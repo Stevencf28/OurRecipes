@@ -2,66 +2,85 @@
 .Search-UI {
   margin-left: 250px;
   margin-top: 30px;
-   background: white;
-   color: white;
-   padding: 1em;
-   border-radius: 30px;
-   width: 100%;
-   max-width: 850px;
-   font-size: 120%;
- }
+  background: white;
+  color: white;
+  padding: 1em;
+  border-radius: 30px;
+  width: 100%;
+  max-width: 850px;
+  font-size: 120%;
+}
 
- .search {
-   display: flex;
-   align-items: center;
-   justify-content: center;
- }
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
- button {
-   margin: 0.5em;
-   border-radius: 50%;
-   border: none;
-   height: 44px;
-   width: 44px;
-   outline: none;
-   background: gray;
-   color: white;
-   cursor: pointer;
-   transition: 0.2s ease-in-out;
- }
+button {
+  margin: 0.5em;
+  border-radius: 50%;
+  border: none;
+  height: 44px;
+  width: 44px;
+  outline: none;
+  background: gray;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
 
- input.search-bar {
-   border: none;
-   outline: none;
-   padding: 0.4em 1em;
-   border-radius: 24px;
-   background: gray;
-   color: white;
-   font-family: inherit;
-   font-size: 105%;
-   width: calc(100% - 100px);
- }
+input.search-bar {
+  border: none;
+  outline: none;
+  padding: 0.4em 1em;
+  border-radius: 24px;
+  background: gray;
+  color: white;
+  font-family: inherit;
+  font-size: 105%;
+  width: calc(100% - 100px);
+}
 
- button:hover {
-   background: #7c7c7c6b;
- }
+button:hover {
+  background: #7c7c7c6b;
+}
 
+.flex {
+  display: flex;
+  align-items: center;
+}
 
- .flex {
-   display: flex;
-   align-items: center;
- }
+.description {
+  text-transform: capitalize;
+  margin-left: 8px;
+}
 
- .description {
-   text-transform: capitalize;
-   margin-left: 8px;
- }
-
-a{
-    color: black;
-    text-decoration: none;
-  }
+a {
+  color: black;
+  text-decoration: none;
+}
 a:hover {
   color: green;
 }
 
+.registration-form {
+  width: 30%;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 40px;
+}
+.form-group {
+  margin-top: 5%;
+}
+.form-control {
+  padding: 10px;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
