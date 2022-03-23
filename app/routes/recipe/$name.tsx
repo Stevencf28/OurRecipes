@@ -2,7 +2,6 @@
 //import type { LoaderFunction } from "remix";
 
 import { Badge, Container, ListGroup, Stack } from "react-bootstrap";
-import { Image } from "remix-image";
 
 /*
 // preparation for loading data into the page for the person creating the response
@@ -23,14 +22,8 @@ export default function name() {
       <div className="d-flex justify-content-center">
         <h1 id="recipeTitle">Recipe Title</h1>
       </div>
-
-      {/*this <Image /> tag is from remix-image
-      it's easier to use to add in responsive images
-      Here's a website that shows its usage
-      https://bestofreactjs.com/repo/Josh-McFarlin-remix-image
-      I recommend to find other sources if you don't understand this part*/}
       <div className="d-flex justify-content-center">
-        <Image />
+        <img />
       </div>
 
       <div>
