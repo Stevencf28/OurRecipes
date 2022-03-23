@@ -1,13 +1,7 @@
 // preparation for loading data into the page
 //import type { LoaderFunction } from "remix";
 
-import {
-  Badge,
-  Container,
-  ListGroup,
-  ListGroupItem,
-  Stack,
-} from "react-bootstrap";
+import { Badge, Container, ListGroup, Stack } from "react-bootstrap";
 import { Image } from "remix-image";
 
 /*
