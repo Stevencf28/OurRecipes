@@ -2,6 +2,10 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "remix";
 
 export default function Navigation(): JSX.Element {
+  // const handleLogout = () => {
+  //   console.log("logout button clicked")
+  //   //api call to logout or navigation goes here
+  // }
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -32,9 +36,9 @@ export default function Navigation(): JSX.Element {
             <NavLink to="/profile/:id" className="nav-link">
               Profile
             </NavLink>
-            <NavLink to="/logout/:id" className="nav-link">
+            <button className="nav-link" onClick={handleLogout}>
               Logout
-            </NavLink>
+            </button>
           </Nav>
   ;*/}
         </Navbar.Collapse>
