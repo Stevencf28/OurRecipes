@@ -1,9 +1,7 @@
-import { Card, Col, Row } from "react-bootstrap";
 import { Form, LoaderFunction, json, useLoaderData } from "remix";
-import RecipeList from "~/components/recipe-list";
+import RecipeList, { Recipe, recipeForClient } from "~/components/recipe-list";
 import { parseToInt } from "~/utils/parseString";
 import {
-  RecipeDetails,
   getRandomRecipes,
   searchRecipesByTitle,
 } from "~/utils/spoonacular.server";
@@ -13,8 +11,7 @@ import {
  */
 interface MainData {
   type: "main";
-  // TODO: filter data and use `Pick<RecipeDetails, "..." | "...">[]`
-  recipes: RecipeDetails[];
+  recipes: Recipe[];
 }
 
 /**
@@ -22,12 +19,9 @@ interface MainData {
  */
 interface SearchData {
   type: "search";
-  results: {
-    // TODO: filter data and use `Pick<RecipeDetails, "..." | "...">[]`
-    recipes: RecipeDetails[];
-    currentPage: number;
-    totalPages: number;
-  };
+  recipes: Recipe[];
+  currentPage: number;
+  totalPages: number;
 }
 
 /**
@@ -52,37 +46,36 @@ export const loader: LoaderFunction = async ({ request }) => {
   // If the search is empty, we return the random list of recipes
   if (!search) {
     const { recipes } = await getRandomRecipes({ number: 9 });
-    // TODO: filter data to only include what to show to the user
-    return json<MainData>({ type: "main", recipes });
+    return json<MainData>({
+      type: "main",
+      recipes: recipes.map(recipeForClient),
+    });
   }
 
-  const NUM_RESULTS_PER_PAGE = 3;
+  const NUM_RESULTS_PER_PAGE = 9;
   const results = await searchRecipesByTitle(search, {
     number: NUM_RESULTS_PER_PAGE,
     offset: page * NUM_RESULTS_PER_PAGE,
   });
   const totalPages = Math.ceil(results.totalResults / NUM_RESULTS_PER_PAGE);
   const currentPage = results.offset / NUM_RESULTS_PER_PAGE;
-  // TODO: filter data to only include what to show to the user
   return json<SearchData>({
     type: "search",
-    results: { totalPages, currentPage, recipes: results.results },
+    totalPages,
+    currentPage,
+    recipes: results.results.map(recipeForClient),
   });
 };
 
+/**
+ * React component for UI for this page
+ */
 export default function Index() {
   const data = useLoaderData<LoaderData>();
-  let recipes: RecipeDetails[];
+  let recipes: Recipe[] = data.recipes;
 
-  if (data.type === "main") {
-    recipes = data.recipes;
-  } else {
-    recipes = data.results.recipes;
-  }
-
-  /*
-   * Form is not called from component due to issues with the form not submitting correctly as a component
-   */
+  // Form is not called from component due to issues with the form not
+  // submitting correctly as a component
   return (
     <>
       <Form method="get">
@@ -112,7 +105,7 @@ function SearchByTitle(): JSX.Element {
           <svg
             stroke="currentColor"
             fill="currentColor"
-            stroke-width="0"
+            strokeWidth="0"
             viewBox="0 0 1024 1024"
             height="1.5em"
             width="1.5em"
