@@ -1,11 +1,36 @@
-import { Form, Link } from "remix";
+import { ActionFunction, Form, Link, useActionData } from "remix";
 import loginStyles from "~/styles/login.css";
 
 export function links() {
   return [{ rel: "stylesheet", href: loginStyles }];
 }
 
-export default function login() {
+/**
+ * Structure of the data that can be returned by the action
+ */
+interface ActionData {
+  error?: string;
+  fields?: {
+    email?: string;
+    password?: string;
+  };
+}
+
+/**
+ * Server-side handler of non-GET requests to this page
+ */
+export const action: ActionFunction = async ({ request }) => {
+  const form = await request.formData();
+  const email = form.get("email");
+  const password = form.get("password");
+};
+
+/**
+ * The react component for the UI for this page
+ */
+export default function Login() {
+  const data = useActionData<ActionData>();
+
   return (
     <div className="container">
       <div className="content">
@@ -17,6 +42,7 @@ export default function login() {
               id="email-input"
               name="email"
               placeholder="Enter your email"
+              defaultValue={data?.fields?.email}
             />
           </div>
           <div className="input">
@@ -25,6 +51,7 @@ export default function login() {
               id="password-input"
               name="password"
               placeholder="Enter your password"
+              defaultValue={data?.fields?.password}
             />
           </div>
           <button type="submit" className="btn btn-primary">
