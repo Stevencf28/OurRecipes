@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import env from "./env.server";
+import getEnv from "./env.server";
 
 // We need to make sure we don't create a new connection every time a request is
 // made to the server or a live reload of the server code happens during
@@ -19,7 +19,7 @@ declare global {
  */
 export default async function connectDB() {
   if (!global.dbConn) {
-    await mongoose.connect(env.name);
+    await mongoose.connect(getEnv("DB_URI"));
     global.dbConn = mongoose;
     console.log("Connected to the database");
   }

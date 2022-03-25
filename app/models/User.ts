@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+
 /**
- * Structure of the snack model
+ * Structure of the user model
  */
 export interface UserData {
   email: String;
@@ -32,12 +33,12 @@ if (process.env.NODE_ENV !== "production" && mongoose.models[modelName]) {
 }
 
 /**
- * Mongoose model for snacks
+ * Mongoose model for users
  */
-const Snack = mongoose.model(modelName, UserSchema);
-export default Snack;
+const User = mongoose.model(modelName, UserSchema);
+export default User;
 
 /**
- * The type of mongoose document for snacks
+ * The type of mongoose document for users
  */
-export type SnackDoc = mongoose.HydratedDocument<UserData>;
+export type UserDoc = mongoose.HydratedDocument<UserData>;
