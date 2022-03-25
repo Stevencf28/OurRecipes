@@ -22,6 +22,9 @@ interface ErrorData {
   status: "error";
   message: string;
 }
+/**
+ * The data returned by the loader in case of any input validation errors
+ */
 
 /**
  * The data returned by the loader in case of any input validation errors
@@ -54,7 +57,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   // The search query provided by the user
   const search = url.searchParams.get("q")!;
-
 
   // The search query must  have 3 letters at least
   const ThreeCharRule = /^[a-zA-Z]{3,}$/;
