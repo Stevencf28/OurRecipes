@@ -1,13 +1,13 @@
-/* Any global styles to apply */
 .Search-UI {
-  margin-left: 250px;
+  display: flex;
+  margin-left: 200px;
   margin-top: 30px;
   background: white;
   color: white;
   padding: 1em;
   border-radius: 30px;
   width: 100%;
-  max-width: 850px;
+  max-width: 900px;
   font-size: 120%;
 }
 
@@ -15,9 +15,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
-button {
+.searchbutton {
   margin: 0.5em;
   border-radius: 50%;
   border: none;
@@ -42,7 +43,7 @@ input.search-bar {
   width: calc(100% - 100px);
 }
 
-button:hover {
+.searchbutton:hover {
   background: #7c7c7c6b;
 }
 
@@ -83,4 +84,26 @@ a:hover {
 .buttonContainer {
   display: flex;
   justify-content: center;
+}
+
+.advanced-search {
+  margin: 0.5em;
+  border: none;
+  height: 44px;
+  width: 25%;
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+  background: gray;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.ingredients {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+.tools {
+  margin-top: 1%;
 }
