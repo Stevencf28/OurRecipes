@@ -1,59 +1,20 @@
 import { useState } from "react";
 import { ActionFunction, json, useActionData } from "remix";
-import validator from "validator";
 import User, { UserData } from "~/models/User.server";
 import { createSessionAndRedirect, register } from "~/utils/auth.server";
-
-interface ValidationResult {
-  // The error messages here should be displayed to the user if present
-  error?: string;
-  // The values given here should be used as the default values for the inputs.
-  // For uncontrolled inputs, that means assigning this value to the
-  // `defaultValue` attribute. For controlled inputs, it means using this value
-  // as the default state value when using `useState` hook. This is mainly for
-  // users who don't run javascript in their browser or for some edge cases
-  // where the network was very slow or errored out and the user submitted the
-  // form before the javascript was loaded.
-  value?: string;
-}
+import {
+  FieldValidationResult,
+  optional,
+  validateEmail,
+  validatePassword,
+  validateString,
+} from "~/utils/inputValidation";
 
 interface ActionData {
-  email: ValidationResult;
-  name: ValidationResult;
-  password: ValidationResult;
+  email: FieldValidationResult;
+  name: FieldValidationResult;
+  password: FieldValidationResult;
 }
-
-const validateEmail = (email: unknown): ValidationResult => {
-  if (typeof email !== "string") return { error: "must be a string" };
-  const value = validator.trim(email);
-  if (!validator.isEmail(value))
-    return { error: "must be a valid email address", value };
-  return { value };
-};
-
-const validatePassword = (password: unknown): ValidationResult => {
-  if (typeof password !== "string") return { error: "must be a string" };
-  const isStrong = validator.isStrongPassword(password, {
-    minLength: 6,
-    minLowercase: 0,
-    minUppercase: 0,
-    minNumbers: 0,
-    minSymbols: 1,
-  });
-  if (!isStrong)
-    return {
-      error:
-        "must be at least 6 characters long and contain at least 1 special character",
-      value: password,
-    };
-  return { value: password };
-};
-
-const validateName = (name: unknown): ValidationResult => {
-  if (name === null) return {};
-  if (typeof name !== "string") return { error: "must be a string or empty" };
-  return { value: validator.trim(name) || undefined };
-};
 
 /**
  * Server-side handler of form requests for registering an account
@@ -61,8 +22,9 @@ const validateName = (name: unknown): ValidationResult => {
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
 
+  // Input validation
   const data: ActionData = {
-    name: validateName(form.get("name")),
+    name: optional(validateString)(form.get("name")),
     email: validateEmail(form.get("email")),
     password: validatePassword(form.get("password")),
   };

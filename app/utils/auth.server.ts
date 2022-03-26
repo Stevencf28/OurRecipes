@@ -62,6 +62,52 @@ export const createSessionAndRedirect = async (
 // ---------------------- USER AUTH FUNCTIONALITIES ----------------------------
 
 /**
+ * Try to get the id of currently logged in user, and return null if not found
+ * or invalid
+ *
+ * This does not check if the id corresponds to a real user in the database. If
+ * you need that guarantee, use {@link getUser} instead.
+ */
+export const getUserId = async (request: Request): Promise<string | null> => {
+  const session = await getCurrentSession(request);
+  const userId = session.get("id");
+  return userId && typeof userId === "string" ? userId : null;
+};
+
+/**
+ * Try to get the id of currently logged in user, and redirect to login page if
+ * not found or invalid
+ *
+ * This does not check if the id corresponds to a real user in the database. If
+ * you need that guarantee, use {@link requireUser} instead.
+ */
+export const requireUserId = async (request: Request): Promise<string> => {
+  const userId = await getUserId(request);
+  if (!userId) throw redirect("/login");
+  return userId;
+};
+
+/**
+ * Try to get the db model of currently logged in user, and return null if not
+ * found or the stored id is invalid
+ */
+export const getUser = async (request: Request): Promise<UserDoc | null> => {
+  const userId = await getUserId(request);
+  if (!userId) return null;
+  return User.findById(userId);
+};
+
+/**
+ * Try to get the db model of currently logged in user, and redirect to login
+ * page if not found or the stored id is invalid
+ */
+export const requireUser = async (request: Request): Promise<UserDoc> => {
+  const user = await getUser(request);
+  if (!user) throw redirect("/login");
+  return user;
+};
+
+/**
  * Add a new user with the given information
  *
  * Input validation and uniqueness checks must be performed before calling this
@@ -70,6 +116,19 @@ export const createSessionAndRedirect = async (
 export const register = async (data: UserData): Promise<UserDoc> => {
   const hash = await bcrypt.hash(data.password, HASH_ROUNDS);
   return new User({ ...data, password: hash }).save();
+};
+
+/**
+ * Check if the given credentials are valid
+ */
+export const checkLogin = async (
+  email: string,
+  password: string,
+): Promise<UserDoc | null> => {
+  const user = await User.findOne({ email });
+  if (!user) return null;
+  const correct = await bcrypt.compare(password, user.password);
+  return correct ? user : null;
 };
 
 /**
