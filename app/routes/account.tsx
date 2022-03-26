@@ -1,28 +1,28 @@
 import { Button, Container, Image, ListGroup, Stack } from "react-bootstrap";
 import { LoaderFunction, json, useLoaderData } from "remix";
 import default_pfp from "~/images/blank_profile.png";
+import { requireUser } from "~/utils/auth.server";
 
 /**
- * This is a temporary type for testing things before the actual database model
- * is implemented
+ * Information on the user returned from the loader
  */
-interface DummyUser {
+interface UserInfo {
   id: string;
   email: string;
   displayName?: string;
 }
 
 interface LoaderData {
-  user: DummyUser;
+  user: UserInfo;
 }
 
-export const loader: LoaderFunction = async () => {
-  // TODO: replace with actual logic after database is implemented
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireUser(request);
   return json<LoaderData>({
     user: {
-      id: "12345",
-      email: "yummy@example.com",
-      displayName: "Yummy in My Tummy",
+      id: user._id.toString(),
+      email: user.email,
+      displayName: user.displayName,
     },
   });
 };
