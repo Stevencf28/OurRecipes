@@ -4,9 +4,9 @@ import mongoose from "mongoose";
  * Structure of the user model
  */
 export interface UserData {
-  email: String;
-  password: String;
-  displayName: String;
+  email: string;
+  password: string;
+  displayName?: string;
 }
 
 const UserSchema = new mongoose.Schema<UserData>({
