@@ -40,12 +40,12 @@ export interface RecipeDetails extends RecipeCore {
   gaps: string;
   dairyFree: boolean;
   glutenFree: boolean;
-  ketogenic: boolean;
+  ketogenic?: boolean;
   lowFodmap: boolean;
   sustainable: boolean;
   vegan: boolean;
   vegetarian: boolean;
-  whole30: boolean;
+  whole30?: boolean;
   analyzedInstructions: AnalyzedInstruction[];
 }
 
@@ -82,7 +82,7 @@ export interface InstructionStep {
   number: number;
   step: string;
   ingredients: IngredientInInstruction[];
-  equiment: EquipmentInInstruction[];
+  equipment: EquipmentInInstruction[];
 }
 
 // -------------------------- Ingredient Types ---------------------------------
