@@ -49,6 +49,10 @@ export interface RecipeDetails extends RecipeCore {
   analyzedInstructions: AnalyzedInstruction[];
 }
 
+export interface RecipeInfo extends RecipeDetails {
+  extendedIngredients: ExtendedIngredient[];
+}
+
 /**
  * The structure for recipe information returned from recipe search with
  * ingredients filters
@@ -89,7 +93,7 @@ export interface IngredientCore {
 }
 
 export interface IngredientWithImage extends IngredientCore {
-  image: string;
+  image: string | null;
 }
 
 export interface IngredientInInstruction extends IngredientWithImage {
@@ -98,13 +102,34 @@ export interface IngredientInInstruction extends IngredientWithImage {
 
 export interface IngredientInRecipeSearch extends IngredientWithImage {
   amount: number;
-  aisle: string;
+  aisle: string | null;
   original: string;
   originalName: string;
   unit: string;
   unitLong: string;
   unitShort: string;
   meta: string[];
+}
+
+export interface ExtendedIngredient extends IngredientWithImage {
+  aisle: string | null;
+  consistency: string | null;
+  nameClean: string | null;
+  original: string;
+  originalName: string;
+  amount: number;
+  unit: string;
+  meta: string[];
+  measures: {
+    us: IngredientMeasure;
+    metric: IngredientMeasure;
+  };
+}
+
+export interface IngredientMeasure {
+  amount: number;
+  unitShort: string;
+  unitLong: string;
 }
 
 // -------------------------- Equipment Types ----------------------------------

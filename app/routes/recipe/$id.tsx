@@ -1,17 +1,38 @@
-// preparation for loading data into the page
-//import type { LoaderFunction } from "remix";
-
 import { Badge, Container, ListGroup, Stack } from "react-bootstrap";
+import { LoaderFunction, json, useLoaderData } from "remix";
+import { parseToInt } from "~/utils/parseString";
+import { RecipeInfo, getRecipeInfo } from "~/utils/spoonacular.server";
 
-/*
-// preparation for loading data into the page for the person creating the response
-export const loader: LoaderFunction = ({ params }) => {
-  return (
-
-  )
+interface LoaderData {
+  recipe?: RecipeInfo;
 }
-*/
-export default function name() {
+
+export const loader: LoaderFunction = async ({ params }) => {
+  const id = parseToInt(params.id ?? "", 0);
+
+  let recipe: RecipeInfo | undefined; // initialized to undefined
+
+  // Send request to the API only if it's not guaranteed to be invalid
+  // (Ids of 0 or less are certainly invalid)
+  if (id > 0) {
+    recipe = (await getRecipeInfo(id)) ?? undefined;
+  }
+
+  // if (!recipe) {
+  //   // Recipe not found; send 404 not found response
+  //   throw json({ url: new URL(request.url), params }, 404);
+  // }
+
+  // The response status should be:
+  // - "200 OK" when the recipe is found
+  // - "404 Not Found" when the recipe is not found
+  const status = recipe ? 200 : 404;
+  return json<LoaderData>({ recipe }, status);
+};
+
+export default function RecipeDetails() {
+  const { recipe } = useLoaderData<LoaderData>();
+
   return (
     <Stack gap={2} direction="vertical">
       {/* Here is the title for the page */}
@@ -20,7 +41,7 @@ export default function name() {
       </head>
       {/*Recipe Title*/}
       <div className="d-flex justify-content-center">
-        <h1 id="recipeTitle">Recipe Title</h1>
+        <h1 id="recipeTitle">{recipe?.title ?? "Not Found"}</h1>
       </div>
       <div className="d-flex justify-content-center">
         <img />

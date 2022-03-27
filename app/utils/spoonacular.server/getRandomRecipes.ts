@@ -1,4 +1,5 @@
 import { RecipeDetails } from "./dataTypes";
+import { ApiError } from "./error";
 import { makeRequest } from "./makeRequest";
 
 export interface GetRandomRecipesOptions {
@@ -44,5 +45,11 @@ export const getRandomRecipes = async (
     params.set("number", options.number.toString());
   }
 
-  return makeRequest<GetRandomRecipesResult>("/recipes/random", params);
+  const response = await makeRequest("/recipes/random", params);
+
+  if (response.status !== 200) {
+    throw new ApiError(response);
+  }
+
+  return response.json();
 };

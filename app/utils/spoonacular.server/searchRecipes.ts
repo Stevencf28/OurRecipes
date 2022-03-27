@@ -1,4 +1,5 @@
 import { RecipeCore, RecipeDetails, RecipeFromIngredients } from "./dataTypes";
+import { ApiError } from "./error";
 import { makeRequest } from "./makeRequest";
 
 const NUMBER_MIN = 1;
@@ -39,7 +40,7 @@ export interface SearchRecipesByTitleOptions {
 export const searchRecipesByTitle = async (
   search: string,
   { number, offset }: SearchRecipesByTitleOptions = {},
-) => {
+): Promise<SearchRecipesResult> => {
   const params = new URLSearchParams();
   params.set("titleMatch", search);
 
@@ -55,7 +56,13 @@ export const searchRecipesByTitle = async (
   params.set("addRecipeInformation", "true");
   params.set("sort", "popularity");
 
-  return makeRequest<SearchRecipesResult>("/recipes/complexSearch", params);
+  const response = await makeRequest("/recipes/complexSearch", params);
+
+  if (response.status !== 200) {
+    throw new ApiError(response);
+  }
+
+  return response.json();
 };
 
 /**
@@ -159,6 +166,11 @@ export const searchRecipes = async (
   params.set("instructionsRequired", "true");
   params.set("addRecipeInformation", "true");
 
-  console.log(params.toString());
-  return makeRequest("/recipes/complexSearch", params);
+  const response = await makeRequest("/recipes/complexSearch", params);
+
+  if (response.status !== 200) {
+    throw new ApiError(response);
+  }
+
+  return response.json();
 };

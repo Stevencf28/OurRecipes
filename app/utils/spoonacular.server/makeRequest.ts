@@ -11,10 +11,10 @@ import { parseToFloat } from "~/utils/parseString";
 // 1 hour because:
 // "You may cache user-requested data ... (for a maximum of 1 hour)."
 // from Spoonacular API FAQ page (https://spoonacular.com/food-api/faq)
-export const makeRequest = async <Data>(
+export const makeRequest = async (
   endpoint: string,
   params: URLSearchParams = new URLSearchParams(),
-): Promise<Data> => {
+): Promise<Response> => {
   params.set("apiKey", getEnv("SPOONACULAR_API_KEY"));
   params.sort();
   const search = params?.toString();
@@ -42,5 +42,5 @@ export const makeRequest = async <Data>(
     );
   }
 
-  return response.json();
+  return response;
 };
