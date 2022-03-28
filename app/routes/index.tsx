@@ -115,18 +115,6 @@ export default function Index() {
 }
 
 function SearchByTitle(): JSX.Element {
-  const [show, setShow] = useState(false);
-  const handleClick = (event) => {
-    event.preventDefault();
-    console.log("advanced search");
-    setShow(true);
-  };
-
-  const handleCloseClick = (event) => {
-    event.preventDefault();
-    console.log("close clicked");
-    setShow(false);
-  };
   return (
     <>
       <div className="Search-UI">
@@ -152,22 +140,7 @@ function SearchByTitle(): JSX.Element {
             </svg>
           </button>
         </div>
-        {show ? (
-          <button className="advanced-search" onClick={handleCloseClick}>
-            Close
-          </button>
-        ) : (
-          <button className="advanced-search" onClick={handleClick}>
-            Advanced Search
-          </button>
-        )}
       </div>
-
-      {show && (
-        <>
-          <AdvancedSearch />
-        </>
-      )}
     </>
   );
 }

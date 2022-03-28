@@ -15,8 +15,8 @@ export default function Navigation(): JSX.Element {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <NavLink to="/" className="nav-link">
-              Something
+            <NavLink to="/search" className="nav-link">
+              Search Recipe
             </NavLink>
             <NavLink to="/" className="nav-link">
               Something

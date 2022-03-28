@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ListGroup } from "react-bootstrap";
 
 export default function AdvancedSearch(): JSX.Element {
   const [included, setIncluded] = useState("");
@@ -6,6 +7,7 @@ export default function AdvancedSearch(): JSX.Element {
 
   const addIncluded = (event) => {
     event.preventDefault();
+    console.log(included);
     console.log("include ingredient clicked");
   };
 

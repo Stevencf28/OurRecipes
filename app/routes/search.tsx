@@ -1,4 +1,7 @@
-import { Badge, Form } from "react-bootstrap";
+import { CatchValue } from "@remix-run/react/transition";
+import React from "react";
+import { useState } from "react";
+import { Badge, Col, Form, InputGroup, Row } from "react-bootstrap";
 import {
   Link,
   LoaderFunction,
@@ -6,6 +9,7 @@ import {
   json,
   useLoaderData,
 } from "remix";
+import AdvancedSearch from "~/components/advanced-search";
 import { parseToInt } from "~/utils/parseString";
 import {
   RecipeDetails,
@@ -131,35 +135,135 @@ export const loader: LoaderFunction = async ({ request }) => {
  */
 export default function Search(): JSX.Element {
   const data = useLoaderData<LoaderData>();
+  const includedIngredients: string[] = [];
   const { status } = data;
+
+  const [included, setIncluded] = useState("");
+  const [excluded, setExcluded] = useState("");
+  const [cookingTools, setCookingTools] = useState("");
+  const [cookingTime, setCookingTime] = useState(0);
+
+  const handleIncludedChange = (value) => setIncluded(value);
+
+  const addIncluded = () => includedIngredients.push(included);
 
   return (
     <div className="container">
       {/* An example of how to set up the form */}
       {/* Of course, don't follow this; this is a terrible example */}
-      <Form as={RemixForm} method="get">
-        <input type="text" name="title" id="search-title" />
-        <br />
-
-        {/* Note the duplicated name "include" */}
-        <span>Include: </span>
-        <input type="text" name="include" id="search-include-0" />
-        <input type="text" name="include" id="search-include-1" />
-        <br />
-
-        <span>Max Cooking Time (minutes) </span>
-        <input
-          type="range"
-          name="maxTime"
-          id="search-max-time"
-          min={0}
-          max={120}
-          step={1}
-          defaultValue={0}
-        />
-        <br />
-
-        <button type="submit">Search</button>
+      <Form method="get">
+        <div className="Search-UI">
+          <div className="search">
+            <input
+              type="text"
+              name="title"
+              id="searchQuery"
+              className="search-bar"
+              placeholder="Search for the recipe you want"
+            />
+            <button type="submit" className="searchbutton">
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                strokeWidth="0"
+                viewBox="0 0 1024 1024"
+                height="1.5em"
+                width="1.5em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0 0 11.6 0l43.6-43.5a8.2 8.2 0 0 0 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <button
+            type="button"
+            className="advanced-search"
+            style={{ width: "8%" }}
+          >
+            Saved filters
+          </button>
+        </div>
+        <div className="ingredients">
+          <h3>Ingredients</h3>
+          {/* Included Ingredients UI */}
+          <Form.Group id="includedGroup">
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1">
+                Included Ingredients
+              </InputGroup.Text>
+              <Form.Control
+                name="include"
+                placeholder="Ingredient"
+                aria-label="Ingredient"
+                aria-describedby="basic-addon1"
+                value={included}
+                onChange={(event) => handleIncludedChange(event.target.value)}
+              />
+              <button
+                type="button"
+                className="searchbutton"
+                onClick={addIncluded}
+              >
+                +
+              </button>
+              <button type="button" className="searchbutton">
+                -
+              </button>
+            </InputGroup>
+          </Form.Group>
+          {/* Excluded Ingredients UI */}
+          <Form.Group id="excludedGroup">
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1">
+                Exclude Ingredients
+              </InputGroup.Text>
+              <Form.Control
+                placeholder="Ingredient"
+                name="exclude"
+                aria-label="Ingredient"
+                aria-describedby="basic-addon1"
+              />
+              <button type="button" className="searchbutton">
+                +
+              </button>
+              <button type="button" className="searchbutton">
+                -
+              </button>
+            </InputGroup>
+          </Form.Group>
+        </div>
+        <div className="ingredients">
+          <h3>Ingredients</h3>
+          {/* Cooking tools UI */}
+          <Form.Group>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1">Cooking Tools</InputGroup.Text>
+              <Form.Control
+                placeholder="Cooking Tools"
+                aria-label="Ingredient"
+                aria-describedby="basic-addon1"
+              />
+              <button type="button" className="searchbutton">
+                +
+              </button>
+              <button type="button" className="searchbutton">
+                -
+              </button>
+            </InputGroup>
+            <Form.Label>Cooking Time: {cookingTime} minutes. </Form.Label>
+            <Form.Range
+              name="maxTime"
+              id="search-max-time"
+              step={1}
+              defaultValue={0}
+              min={0}
+              max={240}
+              onChange={(e) => setCookingTime(+e.target.value)}
+            />
+          </Form.Group>
+        </div>
       </Form>
 
       {/* An example of how to detect and show errors */}
