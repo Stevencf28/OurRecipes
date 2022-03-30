@@ -1,14 +1,7 @@
-import { useState } from "react";
 import { ActionFunction, json, useActionData } from "remix";
 import User, { UserData } from "~/models/User.server";
 import { createSessionAndRedirect, register } from "~/utils/auth.server";
-import {
-  FieldValidationResult,
-  optional,
-  validateEmail,
-  validatePassword,
-  validateString,
-} from "~/utils/inputValidation";
+import { FieldValidationResult, optional, validateEmail, validatePassword, validateString } from "~/utils/inputValidation";
 
 interface ActionData {
   email: FieldValidationResult;
@@ -26,7 +19,7 @@ export const action: ActionFunction = async ({ request }) => {
   const data: ActionData = {
     name: optional(validateString)(form.get("name")),
     email: validateEmail(form.get("email")),
-    password: validatePassword(form.get("password")),
+    password: validatePassword(form.get("password"))
   };
 
   // Return 400 bad request response if there are any errors
@@ -39,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
   const userData: UserData = {
     email: data.email.value!,
     password: data.password.value!,
-    displayName: data.name.value,
+    displayName: data.name.value
   };
 
   // Check if the email address already exists
@@ -61,26 +54,19 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Registration(): JSX.Element {
   const data = useActionData<ActionData>();
 
-  // An example of assigning the returned value as the default value
-  const [email, setEmail] = useState(data?.email.value ?? "");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-
   return (
     <div className="registration-form">
-      <form>
-        <h3 style={{ textAlign: "center" }}>Registraion</h3>
+      <form method="post" action="/register">
+        <h3 style={{ textAlign: "center" }}>Registration</h3>
         <div className="form-group">
           <div className="form-group">
             <label htmlFor="name">Display Name</label>
             <input
+              name="name"
               type="text"
               className="form-control"
               id="name"
               placeholder="Enter display name"
-              onChange={(event) => {
-                setName(event.target.value);
-              }}
             />
             {/* An example of showing the error message */}
             {data?.name.error && (
@@ -93,34 +79,29 @@ export default function Registration(): JSX.Element {
         <div className="form-group">
           <label htmlFor="email">Email address</label>
           <input
+            name="email"
             type="email"
             className="form-control"
             id="email"
             aria-describedby="emailHelp"
             placeholder="Enter email"
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
           />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
+            name="password"
             type="password"
             className="form-control"
             id="password"
             placeholder="Password"
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
           />
         </div>
         <div className="buttonContainer">
           <button
-            type="submit"
             className="btn btn-primary"
             style={{ width: "30%", marginTop: "5%" }}
-          >
+            type="submit">
             Submit
           </button>
         </div>
