@@ -42,7 +42,9 @@ export interface Validator {
  * empty value
  *
  * @example
+ * ```ts
  * const result = optional(validateEmail)(form.get("optional-email"));
+ * ```
  */
 export const optional =
   (v: Validator): Validator =>
@@ -80,6 +82,25 @@ export const validateNonEmpty: Validator = (input: unknown) => {
   if (!value) return { error: "must not be empty", value };
   return { value };
 };
+
+/**
+ * Make a validator that checks if the value is at least `minLength` characters
+ * long after trimming leading/trailing whitespaces
+ *
+ * @example
+ * ```ts
+ * const result = validateMinLength(3)(form.get("search-query"));
+ * ```
+ */
+export const validateMinLength =
+  (minLength: number): Validator =>
+  (input: unknown) => {
+    if (typeof input !== "string") return { error: "must be a string" };
+    const value = validator.trim(input);
+    if (!validator.isLength(value, { min: minLength }))
+      return { error: `must be at least ${minLength} characters long`, value };
+    return { value };
+  };
 
 /**
  * Validator for email addresses
