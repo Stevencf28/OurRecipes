@@ -74,7 +74,7 @@ export default function Registration(): JSX.Element {
               id="name"
               placeholder="Enter display name"
             />
-            {/* An example of showing the error message */}
+            {/* Display Error Handling */}
             {data?.name.error && (
               <p className="alert alert-danger" role="alert">
                 Display name {data.name.error}
@@ -83,25 +83,41 @@ export default function Registration(): JSX.Element {
           </div>
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email address</label>
-          <input
-            name="email"
-            type="email"
-            className="form-control"
-            id="email"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
-          />
+          <div className="form-group">
+            <label htmlFor="email">Email address</label>
+            <input
+              name="email"
+              type="email"
+              className="form-control"
+              id="email"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+            />
+            {/* Email Error Handling */}
+            {data?.email.error && (
+              <p className="alert alert-danger" role="alert">
+                Email {data.email.error}
+              </p>
+            )}
+          </div>
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            name="password"
-            type="password"
-            className="form-control"
-            id="password"
-            placeholder="Password"
-          />
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              name="password"
+              type="password"
+              className="form-control"
+              id="password"
+              placeholder="Password"
+            />
+            {/* Password Error Handling */}
+            {data?.password.error && (
+              <p className="alert alert-danger" role="alert">
+                Password {data.password.error}
+              </p>
+            )}
+          </div>
         </div>
         <div className="buttonContainer">
           <button
