@@ -96,6 +96,11 @@ export default function Profile() {
         <Button variant="primary" href="/myReviews">
           Reviews
         </Button>
+        <form action="/logout" method="post">
+          <Button variant="primary" type="submit" className="button">
+            Logout
+          </Button>
+        </form>
       </ListGroup>
     </Stack>
   );
