@@ -6,6 +6,7 @@ import {
   json,
   redirect,
   useActionData,
+  useTransition,
 } from "remix";
 import loginStyles from "~/styles/login.css";
 import {
@@ -25,19 +26,23 @@ export function links() {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   if (user) throw redirect("/account");
-  return {};
+  return null;
 };
 
 /**
  * Structure of the data that can be returned by the action
+ *
+ * The user is redirected to another page on success. Therefore, the returned
+ * data is always an error.
  */
 interface ActionData {
-  error?: string;
+  error: string;
   email?: string;
   password?: string;
 }
 
-const LOGIN_FAIL_MESSAGE = "Login failed";
+const LOGIN_FAIL_MESSAGE =
+  "Invalid credentials. Please check your email and password.";
 
 /**
  * Server-side handler of non-GET requests to this page
@@ -76,33 +81,60 @@ export const action: ActionFunction = async ({ request }) => {
  */
 export default function Login() {
   const data = useActionData<ActionData>();
+  const { state, type } = useTransition();
+
+  // The "actionRedirect" is when the user is being redirected after a
+  // successful request for login
+  const isLoading = state === "submitting" || type === "actionRedirect";
 
   return (
     <div className="container">
       <div className="content">
         <h1>Login</h1>
         <Form method="post">
-          <div className="input">
-            <input
-              type="email"
-              id="email-input"
-              name="email"
-              placeholder="Enter your email"
-              defaultValue={data?.email}
-            />
-          </div>
-          <div className="input">
-            <input
-              type="password"
-              id="password-input"
-              name="password"
-              placeholder="Enter your password"
-              defaultValue={data?.password}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Login
-          </button>
+          <fieldset disabled={isLoading}>
+            <div className="input">
+              <input
+                type="email"
+                id="email-input"
+                name="email"
+                placeholder="Enter your email"
+                required
+                defaultValue={data?.email}
+              />
+            </div>
+            <div className="input">
+              <input
+                type="password"
+                id="password-input"
+                name="password"
+                placeholder="Enter your password"
+                required
+                defaultValue={data?.password}
+              />
+            </div>
+            {isLoading ? (
+              // Show the loading spinner if the form is being submitted
+              <div className="d-flex justify-content-center">
+                <div className="spinner-border text-primary mt-3" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              // When not loading, show the error message if it exists
+              data?.error && (
+                <div
+                  className="error alert alert-danger mt-3 mb-0"
+                  role="alert"
+                >
+                  {data.error}
+                </div>
+              )
+            )}
+            <button type="submit" className="btn btn-primary">
+              Login
+            </button>
+          </fieldset>
         </Form>
         <div className="links">
           <ul>
