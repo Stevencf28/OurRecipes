@@ -1,5 +1,5 @@
 import { Badge, ListGroup, Stack } from "react-bootstrap";
-import { Link, LoaderFunction, MetaFunction, json, useLoaderData } from "remix";
+import { LoaderFunction, MetaFunction, json, useLoaderData } from "remix";
 import { parseToInt } from "~/utils/parseString";
 import { RecipeInfo, getRecipeInfo } from "~/utils/spoonacular.server";
 
@@ -56,7 +56,7 @@ export default function RecipeDetails() {
         <h1 id="recipeTitle">{recipe.title}</h1>
       </div>
       <div className="d-flex justify-content-center">
-        <img src={recipe.image} alt="" />
+        {recipe.image && <img src={recipe.image} alt="" />}
       </div>
 
       <ListGroup as="ul" className="d-flex" variant="flush">
@@ -178,9 +178,9 @@ export default function RecipeDetails() {
             <p>
               Sorry, we don't support showing instructions for this recipe yet.
               Please go{" "}
-              <Link to={recipe.sourceUrl} reloadDocument>
+              <a href={recipe.sourceUrl} target="_blank" rel="noreferrer">
                 here
-              </Link>{" "}
+              </a>{" "}
               to see the instructions.
             </p>
           )}

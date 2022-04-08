@@ -1,3 +1,4 @@
+import { saveRecipesToCache } from "~/controllers/Recipe.server";
 import { RecipeCore, RecipeDetails, RecipeFromIngredients } from "./dataTypes";
 import { ApiError } from "./error";
 import { makeRequest } from "./makeRequest";
@@ -62,7 +63,9 @@ export const searchRecipesByTitle = async (
     throw new ApiError(response);
   }
 
-  return response.json();
+  const data: SearchRecipesResult = await response.json();
+  saveRecipesToCache(data.results);
+  return data;
 };
 
 /**
@@ -172,5 +175,7 @@ export const searchRecipes = async (
     throw new ApiError(response);
   }
 
-  return response.json();
+  const data: Awaited<ReturnType<typeof searchRecipes>> = await response.json();
+  saveRecipesToCache(data.results);
+  return data;
 };

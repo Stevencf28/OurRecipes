@@ -28,7 +28,6 @@ const CollectionSchema = new mongoose.Schema<CollectionData>(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      unique: true,
       ref: "user",
     },
     name: {

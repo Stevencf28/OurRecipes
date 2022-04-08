@@ -1,3 +1,4 @@
+import { saveRecipesToCache } from "~/controllers/Recipe.server";
 import { RecipeDetails } from "./dataTypes";
 import { ApiError } from "./error";
 import { makeRequest } from "./makeRequest";
@@ -51,5 +52,7 @@ export const getRandomRecipes = async (
     throw new ApiError(response);
   }
 
-  return response.json();
+  const data: GetRandomRecipesResult = await response.json();
+  saveRecipesToCache(data.recipes);
+  return data;
 };

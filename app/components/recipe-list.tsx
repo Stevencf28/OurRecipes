@@ -11,7 +11,7 @@ import { RecipeDetails } from "~/utils/spoonacular.server";
 export interface Recipe {
   id: number;
   title: string;
-  image: string;
+  image?: string;
   cookingTime: number; // in minutes
   sourceUrl: string;
 }
@@ -25,7 +25,7 @@ export interface Recipe {
 export const recipeForClient = (details: RecipeDetails): Recipe => ({
   id: details.id,
   title: details.title,
-  image: details.image,
+  image: details.image ?? undefined,
   cookingTime: details.readyInMinutes,
   sourceUrl: details.sourceUrl,
 });

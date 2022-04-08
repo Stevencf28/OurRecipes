@@ -16,8 +16,8 @@
 export interface RecipeCore {
   id: number;
   title: string;
-  image: string;
-  imageType: string;
+  image: string | null;
+  imageType: string | null;
 }
 
 // This is not all of the fields, but I just picked the ones that didn't look
