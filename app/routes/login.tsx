@@ -131,7 +131,7 @@ export default function Login() {
                 </div>
               )
             )}
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="loginBtn btn-primary">
               Login
             </button>
           </fieldset>

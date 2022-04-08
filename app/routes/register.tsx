@@ -125,7 +125,7 @@ export default function Registration(): JSX.Element {
             style={{ width: "30%", marginTop: "5%" }}
             type="submit"
           >
-            Submit
+            Register
           </button>
         </div>
       </form>

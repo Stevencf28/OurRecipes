@@ -1,5 +1,5 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { NavLink } from "remix";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Form, NavLink } from "remix";
 
 export default function Navigation(): JSX.Element {
   // const handleLogout = () => {
@@ -29,11 +29,14 @@ export default function Navigation(): JSX.Element {
             <NavLink to="/register" className="nav-link">
               Register
             </NavLink>
-          </Nav>
-          <Nav className="ms-auto">
             <NavLink to="/account" className="nav-link">
               Profile
             </NavLink>
+            <Form action="/logout" method="post">
+              <Button type="submit" variant="danger" id="logOutButton">
+                Logout
+              </Button>
+            </Form>
           </Nav>
         </Navbar.Collapse>
       </Container>

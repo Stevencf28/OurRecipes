@@ -47,7 +47,7 @@ input {
   text-decoration-thickness: 1px;
 }
 
-.btn {
+.loginBtn {
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
