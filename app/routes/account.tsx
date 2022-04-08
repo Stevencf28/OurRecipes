@@ -1,7 +1,18 @@
 import { Button, Container, Image, ListGroup, Stack } from "react-bootstrap";
-import { LoaderFunction, json, useLoaderData } from "remix";
+import {
+  LoaderFunction,
+  MetaFunction,
+  NavLink,
+  Outlet,
+  json,
+  useLoaderData,
+} from "remix";
 import default_pfp from "~/images/blank_profile.png";
 import { requireUser } from "~/utils/auth.server";
+
+export const meta: MetaFunction = () => ({
+  title: "Account Details",
+});
 
 /**
  * Information on the user returned from the loader
@@ -32,10 +43,6 @@ export default function Profile() {
 
   return (
     <Stack gap={3} direction="vertical">
-      {/* Here is the title for the page */}
-      <head>
-        <title>Recipe Details</title>
-      </head>
       <div className="d-flex justify-content-center">
         <h1>My Profile</h1>
       </div>
@@ -83,25 +90,39 @@ export default function Profile() {
           </Button>
         </Container>
       </Stack>
-      <ListGroup
-        horizontal
-        className="d-flex gap-2 justify-content-center align-items-center"
+
+      <section
+        className="container mx-3 mx-sm-auto mt-3 px-0 py-3 border rounded-3"
+        aria-label="Details"
       >
-        <Button variant="primary" href="/collections">
-          Collections
-        </Button>
-        <Button variant="primary" href="/myRecipes">
-          Personal Recipes
-        </Button>
-        <Button variant="primary" href="/myReviews">
-          Reviews
-        </Button>
-        <form action="/logout" method="post">
-          <Button variant="primary" type="submit" className="button">
-            Logout
-          </Button>
-        </form>
-      </ListGroup>
+        <nav className="border-bottom px-3 px-md-4">
+          <ul className="nav nav-tabs border-0">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="." end>
+                Home
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="collections">
+                Collections
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="recipes">
+                My Recipes
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="reviews">
+                My Reviews
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+        <div className="p-3 p-md-4 p-lg-5" style={{ minHeight: "10rem" }}>
+          <Outlet />
+        </div>
+      </section>
     </Stack>
   );
 }
