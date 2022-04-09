@@ -1,7 +1,7 @@
 import { CatchBoundaryComponent } from "@remix-run/react/routeModules";
 import { ReactNode } from "react";
 import SSRProvider from "react-bootstrap/SSRProvider";
-import type { MetaFunction } from "remix";
+import { LoaderFunction, MetaFunction, json } from "remix";
 import {
   ErrorBoundaryComponent,
   Links,
@@ -14,7 +14,8 @@ import {
   useCatch,
 } from "remix";
 import rootStyles from "~/styles/root.css";
-import Navigation from "./components/navigation";
+import Navigation, { UserInfo } from "./components/navigation";
+import { getUser } from "./utils/auth.server";
 //import SearchByTitle from "./components/searchBar";
 
 /**
@@ -44,6 +45,19 @@ export const links: LinksFunction = () => [
 interface DocumentProps {
   children?: ReactNode;
 }
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const userDoc = await getUser(request);
+  return json<{ user: UserInfo | null }>({
+    user: userDoc
+      ? {
+          id: userDoc._id.toString(),
+          email: userDoc.email,
+          displayName: userDoc.displayName,
+        }
+      : null,
+  });
+};
 
 function Document({ children }: DocumentProps): JSX.Element {
   // NOTE: We could create a layout component in the components folder

@@ -1,11 +1,14 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import { Form, NavLink } from "remix";
+import { Form, NavLink, useLoaderData } from "remix";
+
+export interface UserInfo {
+  id: string;
+  email: string;
+  displayName?: string;
+}
 
 export default function Navigation(): JSX.Element {
-  // const handleLogout = () => {
-  //   console.log("logout button clicked")
-  //   //api call to logout or navigation goes here
-  // }
+  const data = useLoaderData<{ user: UserInfo | null }>();
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -18,25 +21,32 @@ export default function Navigation(): JSX.Element {
             <NavLink to="/search" className="nav-link">
               Search Recipe
             </NavLink>
-            <NavLink to="/" className="nav-link">
-              Something
+            <NavLink to="/account/collections" className="nav-link">
+              My Collections
             </NavLink>
           </Nav>
           <Nav className="ms-auto">
-            <NavLink to="/login" className="nav-link">
-              Login
-            </NavLink>
-            <NavLink to="/register" className="nav-link">
-              Register
-            </NavLink>
-            <NavLink to="/account" className="nav-link">
-              Profile
-            </NavLink>
-            <Form action="/logout" method="post">
-              <Button type="submit" variant="danger" id="logOutButton">
-                Logout
-              </Button>
-            </Form>
+            {data?.user ? (
+              <>
+                <NavLink to="/account" className="nav-link">
+                  My Profile: {data.user.displayName || "User"}
+                </NavLink>
+                <Form action="/logout" method="post">
+                  <Button type="submit" variant="danger" id="logOutButton">
+                    Logout
+                  </Button>
+                </Form>{" "}
+              </>
+            ) : (
+              <>
+                <NavLink to="/login" className="nav-link">
+                  Login
+                </NavLink>
+                <NavLink to="/register" className="nav-link">
+                  Register
+                </NavLink>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
