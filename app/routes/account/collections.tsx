@@ -135,6 +135,12 @@ export default function Collections(): JSX.Element {
             <label htmlFor="new-name" className="form-label">
               Collection Name
             </label>
+            {/* Error Handling */}
+            {actionData?.status === "error" && (
+              <p className="alert alert-danger" role="alert">
+                {actionData.error}
+              </p>
+            )}
             <input
               type="text"
               name="name"
