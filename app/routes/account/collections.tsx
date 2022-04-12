@@ -7,6 +7,7 @@ import {
   json,
   redirect,
   useActionData,
+  useTransition,
 } from "remix";
 import Collection from "~/models/Collection.server";
 import { requireUser } from "~/utils/auth.server";
@@ -118,7 +119,12 @@ export const action: ActionFunction = async ({ request }) => {
  * UI of this page
  */
 export default function Collections(): JSX.Element {
+  // data for the error intake for add collection
   const actionData = useActionData<ActionData>();
+
+  // Transition for the intake input of the user for add collection
+  const { state, type } = useTransition();
+  const isLoading = state === "submitting" || type === "actionRedirect";
 
   // NOTE: Probably put a list of collections on the left side with each item
   // being a link to the collection page, and render the child page using the
@@ -129,7 +135,7 @@ export default function Collections(): JSX.Element {
       <h3>Collections</h3>
       <Form method="post">
         {/* for easy disabling of all fields */}
-        <fieldset>
+        <fieldset disabled={isLoading}>
           <input type="hidden" name="type" value="add" />
           <div className="mb-3">
             <label htmlFor="new-name" className="form-label">
@@ -149,6 +155,21 @@ export default function Collections(): JSX.Element {
               required
             />
           </div>
+          {isLoading ? (
+            // Show the loading spinner if the form is being submitted
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border text-primary mt-3" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          ) : (
+            // When not loading, show the error  if it exists
+            actionData?.opType && (
+              <div className="error alert alert-danger mt-3 mb-0" role="alert">
+                {actionData.status}
+              </div>
+            )
+          )}
           <Button type="submit">Add Collection</Button>
         </fieldset>
       </Form>
