@@ -1,8 +1,9 @@
-import { Button } from "react-bootstrap";
+import { Button, Col, Nav, Row } from "react-bootstrap";
 import {
   ActionFunction,
   Form,
   LoaderFunction,
+  NavLink,
   Outlet,
   json,
   redirect,
@@ -136,17 +137,12 @@ export default function Collections(): JSX.Element {
       <Form method="post">
         {/* for easy disabling of all fields */}
         <fieldset disabled={isLoading}>
-          <input type="hidden" name="type" value="add" />
-          <div className="mb-3">
+          <div className="input-group mb-3">
+            <input type="hidden" name="type" value="add" />
             <label htmlFor="new-name" className="form-label">
-              Collection Name
+              Collection Name:
             </label>
-            {/* Error Handling */}
-            {actionData?.status === "error" && (
-              <p className="alert alert-danger" role="alert">
-                {actionData.error}
-              </p>
-            )}
+            <br></br>
             <input
               type="text"
               name="name"
@@ -154,6 +150,14 @@ export default function Collections(): JSX.Element {
               className="form-control"
               required
             />
+            <Button
+              className="btn btn-outline-secondary"
+              type="submit"
+              id="button-addon2"
+              style={{ color: "white" }}
+            >
+              Add Collection
+            </Button>
           </div>
           {isLoading ? (
             // Show the loading spinner if the form is being submitted
@@ -164,17 +168,33 @@ export default function Collections(): JSX.Element {
             </div>
           ) : (
             // When not loading, show the error  if it exists
-            actionData?.opType && (
-              <div className="error alert alert-danger mt-3 mb-0" role="alert">
-                {actionData.status}
-              </div>
+            actionData?.status === "error" && (
+              <p className="alert alert-danger" role="alert">
+                {actionData.error}
+              </p>
             )
           )}
-          <Button type="submit">Add Collection</Button>
         </fieldset>
       </Form>
-
-      <Outlet />
+      <Row>
+        <Col sm={3}>
+          <Nav variant="pills" className="flex-column">
+            <Nav.Item>
+              <NavLink className="nav-link" to="tab1">
+                Tab 1
+              </NavLink>
+            </Nav.Item>
+            <Nav.Item>
+              <NavLink className="nav-link" to="tab1">
+                Tab 2
+              </NavLink>
+            </Nav.Item>
+          </Nav>
+        </Col>
+        <Col sm={9}>
+          <Outlet />
+        </Col>
+      </Row>
     </>
   );
 }

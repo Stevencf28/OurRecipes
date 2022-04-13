@@ -1,4 +1,5 @@
 import { LoaderFunction, MetaFunction, json, useLoaderData } from "remix";
+import RecipeList from "~/components/recipe-list";
 import Collection from "~/models/Collection.server";
 
 interface CollectionInfo {
@@ -34,7 +35,8 @@ export default function CollectionId(): JSX.Element {
   const data = useLoaderData<LoaderData>();
   return (
     <>
-      <h3>Collection page for {data.collection?.name}</h3>
+      <h3>Collection recipes for {data.collection?.name}</h3>
+      <RecipeList recipes={[]} />
     </>
   );
 }
