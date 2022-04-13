@@ -186,8 +186,8 @@ export default function Collections(): JSX.Element {
         </fieldset>
       </Form>
       <Row style={styles.collectionContainer}>
-        <Col sm={3}>
-          <Nav variant="pills" className="flex-column">
+        <Col sm={3} className=" mt-5">
+          <Nav variant="pills" className="flex-column border">
             {data?.collections?.map?.((c, i) => {
               return (
                 <Nav.Item>
