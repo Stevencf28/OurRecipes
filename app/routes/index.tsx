@@ -117,6 +117,7 @@ export default function Index() {
                 aria-describedby={
                   data.status === "error" ? "search-error" : undefined
                 }
+                required
               />
               <button type="submit" className="searchbutton">
                 <svg
