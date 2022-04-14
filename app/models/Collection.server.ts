@@ -23,6 +23,8 @@ export interface CollectionData {
   updatedAt: Date;
 }
 
+/**
+ * Schema for the recipe collection */
 const CollectionSchema = new mongoose.Schema<CollectionData>(
   {
     user: {
