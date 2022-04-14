@@ -66,14 +66,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   // Whether the values for the filters are all empty
   const filtersEmpty =
-    !title &&
-    !include.length &&
-    !exclude.length &&
-    !tools.length &&
-    maxTime <= 0;
+    include?.length || exclude?.length || tools?.length || maxTime > 0;
+
+  console.log("empty? ", filtersEmpty);
 
   // If the filters are all empty, this is a mal-formed request
-  if (filtersEmpty) {
+  if (!filtersEmpty) {
     return json<ErrorData>(
       {
         status: "error",
@@ -220,6 +218,7 @@ export default function Search(): JSX.Element {
             <InputGroup className="mb-3">
               <InputGroup.Text id="basic-addon1">Cooking Tools</InputGroup.Text>
               <Form.Control
+                name="tools"
                 placeholder="Cooking Tools"
                 aria-label="Ingredient"
                 aria-describedby="basic-addon1"
